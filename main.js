@@ -1,6 +1,6 @@
 import Vector from "./vector.js";
 
-const arrow = new Vector();
+const line = new Vector(100, 0);
 
 // Setup Canvas
 const canvas = document.getElementById('canvas');
@@ -16,11 +16,13 @@ const angleLabel = document.getElementById('angleLabel')
 angleSlider.addEventListener('input', ()=>{
     console.log(angleSlider.value);
     angleLabel.innerText = angleSlider.value + 'deg';
-    arrow.rotate = angleSlider.value;
+    line.rotate = angleSlider.value;
 });
 
 
-const drawArrow = ()=>{
+let start = new Vector(300,300);
+
+const drawline = ()=>{
 
     // draw background color
     context.fillStyle = "#568cb3";
@@ -28,7 +30,7 @@ const drawArrow = ()=>{
 
     // Draw Origin
     context.beginPath();
-    context.arc(arrow.x1, arrow.y1, 2, 0, 2 * Math.PI);
+    context.arc(start.x, start.y, 2, 0, 2 * Math.PI);
     context.stroke();
     context.fillStyle = '#ff0000';
     context.fill();
@@ -36,23 +38,24 @@ const drawArrow = ()=>{
     // Draw First Point
     context.fillStyle = "#ffffff";
     context.beginPath();
-    context.moveTo(arrow.x1, arrow.y1);
+    context.moveTo(start.x, start.y);
 
     // Convert Degrees to Radians
-    let radians = -arrow.rotate * (Math.PI / 180);
+    // using -radians to invert rotation
+    let radians = -line.rotate * (Math.PI / 180);
 
     // Get x2 & y2 location
-    arrow.x2 = Math.cos(radians) * arrow.x1 - Math.sin(radians) * arrow.y1;
-    arrow.y2 = Math.sin(radians) * arrow.x1 + Math.cos(radians) * arrow.y1;
+    let x2 = start.x + Math.cos(radians) * line.x - Math.sin(radians) * line.y;
+    let y2 = start.y + Math.sin(radians) * line.x + Math.cos(radians) * line.y;
 
     // Draw New Line
-    context.lineTo(arrow.x2, arrow.y2);
+    context.lineTo(x2, y2);
     context.stroke();
 
-    requestAnimationFrame(drawArrow)
+    requestAnimationFrame(drawline)
 }
 
-drawArrow();
+drawline();
 
 
 

@@ -1,9 +1,8 @@
 export default class Vector{
-    constructor(){
-        this.x1 = 250;
-        this.y1 = 300;
-        this.x2 = 100;
-        this.y2 = 100;
+    constructor(x, y){
+        this.x = x;
+        this.y = y;
+        this.magnitude = Math.sqrt(x * x + y * y)
         this.rotate = 0;
     }
 
